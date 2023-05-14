@@ -292,18 +292,12 @@ def insurance(df):
     
   X= new_df.drop(['FraudFound_P'],axis=1)
   y= new_df['FraudFound_P']
-    
-
-    
-
   count0= (df['FraudFound_P']==0).sum()
   count1= (df['FraudFound_P']==1).sum()
-
   if(count1/2 >= count0):
     smote= True
   else:
     smote= False
-        
         
   """SMOTE"""
 
@@ -349,15 +343,14 @@ def insurance(df):
         
     grid_search.fit(X_train, y_train)
     pickle.dump(grid_search, open('model.pkl', 'wb'))
-    return grid_search
-
+  model(X_train, y_train, smote)
 #   def predict(model, X_test):
 #     return model.predict(X_test)
 
 #   trained_model = model(X_train, y_train,smote)
 #   predictions = predict(trained_model, X_test)
 #   return  predictions[0]
-
-model =pickle.load(open('model.pkl', 'rb'))
+insurance(pd.read_csv('fraud_oracle.csv'))
+model = pickle.load(open('model.pkl', 'rb'))
 # with open('model.pkl', 'wb') as f:
 #     pickle.dump(insurance, f)

@@ -12,6 +12,38 @@ model=pickle.load(open('model.pkl','rb'))
 def index():
     return render_template('index.html')
 
+company = {
+    'Lexus': 0,
+    'Ferrari': 1, 
+    'Mecedes': 2,
+    'Porche': 3,
+    'Jaguar': 4,
+    'BMW': 5,            
+    'Nisson': 6,
+    'Saturn': 7,
+    'Mercury':8,
+    'Dodge' : 9,
+    'Saab' : 10,
+    'VW' : 11,
+    'Ford': 12,
+    'Accura': 13,
+    'Chevrolet': 14,
+    'Mazda' : 15,
+    'Honda' : 16,
+    'Toyota' : 17,
+    'Pontiac': 18
+}
+
+week = {
+    'Monday': 0,
+    'Tuesday': 1,
+    'Wednesday': 2,
+    'Thursday': 3,
+    'Friday': 4, 
+    'Saturday': 5,
+    'Sunday' : 6
+}
+
 
 @app.route('/predict' , methods=['POST'])
 def predict():
@@ -19,12 +51,13 @@ def predict():
 
         Month=int(request.form.get('month'))  if request.form['month'] is not None else None
         Sex = request.form.get('sex')
-        Make = request.form.get('CarModel')
+        Make = company[request.form.get('CarModel')]
         MaritalStatus = request.form.get('0', '') or request.form.get('1', '') or request.form.get('2', '') or request.form.get('3', '')
         
-        Day_OfWeekClaimed = request.form.get('DayOfWeekClaimed')
-        if Day_OfWeekClaimed is not None:
-            DayOfWeekClaimed=Day_OfWeekClaimed
+        Day = request.form.get('DayOfWeekClaimed')
+        DayOfWeekClaimed = -1
+        if Day is not None:
+            DayOfWeekClaimed=week[Day]
         else:
             DayOfWeekClaimed=-1
         
@@ -57,7 +90,6 @@ def predict():
         data_dict = dict(zip(['Month', 'DayOfWeek', 'Make', 'AccidentArea', 'DayOfWeekClaimed', 'MonthClaimed', 'Sex', 'MaritalStatus', 'Age', 'Fault', 'PolicyType', 'VehicleCategory', 'VehiclePrice', 'PolicyNumber', 'RepNumber', 'Deductible', 'Days_Policy_Accident', 'Days_Policy_Claim', 'PastNumberOfClaims', 'AgeOfVehicle', 'PoliceReportFiled', 'WitnessPresent', 'AgentType', 'NumberOfSuppliments', 'AddressChange_Claim', 'NumberOfCars', 'Year', 'BasePolicy'], input_data))
         print(data_dict)
         df=pd.DataFrame.from_dict(data_dict,orient='index').T
-
         prediction = model.predict(df)
         return render_template('C:\\Users\\HP\\OneDrive\\Desktop\\amex2\\templates\\predict.html', prediction_text = 'your result is ${}'.format(prediction))
 
