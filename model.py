@@ -167,7 +167,8 @@ def insurance(df):
         'Sep': 8,
         'Oct' : 9,
         'Nov' : 10,
-        'Dec' : 11
+        'Dec' : 11,
+        'None' : 12
         })
 
 
